@@ -1,0 +1,45 @@
+{
+  "applicationName": "cicd-aws-codedeploy-php-yasumoto-0617",
+  "deploymentGroupName": "cicd-aws-codedeploy-php-group",
+  "serviceRoleArn": "arn:aws:iam::561378667739:role/CodeDeployServiceRole-yasumoto-0617",
+  "deploymentStyle": {
+    "deploymentType": "BLUE_GREEN",
+    "deploymentOption": "WITH_TRAFFIC_CONTROL"
+  },
+  "blueGreenDeploymentConfiguration": {
+    "terminateBlueInstancesOnDeploymentSuccess": {
+      "action": "TERMINATE",
+      "terminationWaitTimeInMinutes": 1
+    },
+    "deploymentReadyOption": {
+      "actionOnTimeout": "CONTINUE_DEPLOYMENT",
+      "waitTimeInMinutes": 0
+    }
+  },  
+  "ecsServices": [
+    {
+      "clusterName": "ecs-cluster-yasumoto-0617",
+      "serviceName": "php-service-yasumoto-0617"
+    }
+  ],
+  "loadBalancerInfo": {
+    "targetGroupPairInfoList": [
+      {
+        "prodTrafficRoute": {
+          "listenerArns": [
+            "arn:aws:elasticloadbalancing:ap-northeast-1:561378667739:listener/app/alb-yasumoto-0617/9b07a45827d9a51b/3c22fdd30b0356c3"
+          ]
+        },
+        "testTrafficRoute": {
+          "listenerArns": [
+            "arn:aws:elasticloadbalancing:ap-northeast-1:561378667739:listener/app/alb-yasumoto-0617/9b07a45827d9a51b/2d9893730a1d907a"
+          ]
+        },
+        "targetGroups": [
+          { "name": "php-blue-tg-yasumoto-0617" },
+          { "name": "php-green-tg-yasumoto-0617" }
+        ]
+      }
+    ]
+  }
+}
